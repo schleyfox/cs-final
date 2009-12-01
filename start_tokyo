@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+puts "Starting TokyoTyrant"
+system("ttserver -port 4321 -pid #{File.expand_path('./run/tokyo_bus_stops.pid')} -log #{File.expand_path('./log/tokyo_bus_stops.log')} -dmn #{File.expand_path('db/tokyo_bus_stops.tct')}")
+puts "TokyoTyrant Started"
+
