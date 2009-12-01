@@ -1,7 +1,8 @@
 require 'rubygems'
 require 'rufus/tokyo/tyrant'
 
-Rufus::Tokyo::Tyrant
+# stops in {station_id => [lat, lon]} form
+BusStops = {16819 => []}
 
-BusStops = Rufus::Tokyo::TyrantTable.new('localhost', 4321)
+BusTimes = Rufus::Tokyo::TyrantTable.new('localhost', 4321)
 
