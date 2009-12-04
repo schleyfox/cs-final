@@ -10,9 +10,8 @@ BusStops.keys.each do |stop|
     cols = (row/:td)
     times[cols[1].innerHTML] ||= cols[3].innerHTML.to_i*60
   end
-  p times
 
-  BusTimes[stop.to_s] = times
+  BusTimes[stop.to_s] = times.merge('fetched_at' => Time.now.to_i)
 end
 
 
