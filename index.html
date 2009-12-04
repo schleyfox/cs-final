@@ -5,6 +5,9 @@
 <script type="text/javascript" src="jquery.min.js"></script>  
 <SCRIPT type="text/javascript">
 
+/*Global Variables:
+Coords - stores coordinates, index 0 is starting point, 1 is current, 2 is ending
+*/
 Coords = new Array(3);
 var map;
 var Directions;
@@ -29,8 +32,9 @@ function initializeBusStopCoords()
 function GetCoords (form) {
     var Start = form.StartingAddress.value;
 	var End = form.Destination.value;
- //   alert ("You typed: " + Start + " And " + End);
-	jQuery.ajax({
+	
+    //Ajax request for starting point
+    jQuery.ajax({
 		dataType: 'jsonp',
 		url: 'http://maps.google.com/maps/geo?q=' + Start + '&output=json&sensor=true&key=ABQIAAAAvdV_C7EiC5qvYhizkNRvmxQ_pFa7EbBvItR2syiehiKCeylqUhSqRWNiI9G0u5Zlh8ZrT-4fScLzTw',
 		cache: false,
@@ -38,11 +42,13 @@ function GetCoords (form) {
 			if(data.Status.code==200) {
 				Coords[0] = [data.Placemark[0].Point.coordinates[1],data.Placemark[0].Point.coordinates[0]];
 //				alert(Coords[0][0]);
-				Coords[1] = FindNearest(data.Placemark[0].Point.coordinates[0],data.Placemark[0].Point.coordinates[1]);
+				Coords[1] = FindNearestBusStop(data.Placemark[0].Point.coordinates[0],data.Placemark[0].Point.coordinates[1]);
 			}
 		}
 	})
-	jQuery.ajax({
+	
+    //Ajax request for ending point
+    jQuery.ajax({
 		dataType: 'jsonp',
 		url: 'http://maps.google.com/maps/geo?q=' + End + '&output=json&sensor=true&key=ABQIAAAAvdV_C7EiC5qvYhizkNRvmxQ_pFa7EbBvItR2syiehiKCeylqUhSqRWNiI9G0u5Zlh8ZrT-4fScLzTw',
 		cache: false,
@@ -53,7 +59,6 @@ function GetCoords (form) {
 			}
 		}
 	})
-//	alert(Coords[0][0]);;
 }
 
 function FindBestRoute (Longitude, Latitude) {
@@ -71,31 +76,29 @@ function FindBestRoute (Longitude, Latitude) {
 	}
 }
 
-function FindNearest (longitude, latitude, StopType) {
+function FindNearestBusStop (longitude, latitude, StopType) {
 	var Distance = 1000.0;
 	var ReturnStop = 0;
-	for(var x in busStops) {
+	
+    for(var x in busStops) {
 		if(busStops[x][3] == StopType){
 			var TempDistance;
 			TempDistance = ((busStops[x][1] - latitude)*(busStops[x][1] - latitude)) - ((busStops[x][0] - longitude)*(busStops[x][0] - longitude));
 			TempDistance = Math.sqrt(TempDistance);
-//			alert(TempDistance);
 			if (TempDistance < Distance) {
 				Distance = TempDistance;
 				ReturnStop = x;
-//				alert("MADE IT");
 			}
 		}
 	}
 	return busStops[ReturnStop];
-//	alert(ReturnStop);
-//	alert(busStops[ReturnStop]);
 }
+
 function ShowTheMap() {
         map = new GMap2(document.getElementById("map_canvas"));
 		Directions = new GDirections(map, null);
 		Directions.load("From: " + Coords[0] + " To: " + Coords[2]);
-		alert("From: " + Coords[0] + " To: " + Coords[2]);
+		//alert("From: " + Coords[0] + " To: " + Coords[2]);
         map.setCenter(new GLatLng(Coords[0][0], Coords[0][1]), 13);
         map.setUIToDefault();
 		var Start = new GLatLng(Coords[0][0], Coords[0][1]);
