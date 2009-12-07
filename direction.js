@@ -67,7 +67,45 @@ var Direction = {
     }
   },
 
-  findNearestRoute: function(start, end) {},
+  findNearestRoute: function(start, end) {
+	//REQUIRES:
+	//EFFECTS:
+	//MODIFIES:
+ 
+	//Every kind of route,, to hold the distances for each route (Distances is the shortest total from starting point and ending point to the nearest stops on the line)
+	TotalDistances['NL'] = 0;
+	TotalDistances['CS'] = 0;
+	TotalDistances['G'] = 0;
+	TotalDistances['UL'] = 0;
+	TotalDistances['CGS'] = 0;
+      $.getJSON("localhost:4567/bus_routes_with_geo.json",
+        //Go Through every object in the Json.
+        function(data) {
+          for(route_type in data)
+		  {
+			TStartD, TEndD = 100.0;
+			for(stop_num in data[route_type])
+			{
+				//Find the distances for the Stop on this line. If it is smaller, make its distance the smallest distance for the line. Uses the Distance Formula.
+				//SquareRoot( BusLat - StatrtLat)^2 + (BusLong - StartLong)^2)
+				StartDistance = Math.sqrt((data[route_type][stop_num][0] - start[0])(data[route_type][stop_num][0] - start[0]) + (data[route_type][stop_num][1] - start[1])(data[route_type][stop_num][1] - start[1]))
+				EndDistance = Math.sqrt((data[route_type][stop_num][0] - end[0])(data[route_type][stop_num][0] - end[0]) + (data[route_type][stop_num][1] - end[1])(data[route_type][stop_num][1] - end[1]))
+				if(StartDistance < TStartD) {TStartD = StartDistance;}
+				if(EndDistance < TEndD) {TEndD = EndDistance;}
+			}
+			//Store the final smallest disances for this Line
+			TotalDistances[route_type] = TStartD + TEndD;
+		  }
+		  TempDistance = 100.0;
+		  var FinalRoute;
+		  //Finally, find out which route had the shortest distance.
+		  for(route_type in TotalDistances)
+		  {
+			if(TotalDistances[route_type] < TempDistance) {FinalRoute = route_type;}
+		  }
+		  //FinalRoute is the best route to take. I don't know what you want this function to return though.
+		});
+  },
 
   directionsCallback: function(name) {
     //Requires: Requires name to be not null
