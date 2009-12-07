@@ -22,7 +22,16 @@ var Direction = {
     //          with data from bus_routes.json
     //Modifies: bus_routes
     //Effects: Initializes bus_routes and attemps to getDirections
-    this.bus_routes = routes;
+    
+    //Add name property to bus stop arrays
+    route_list = [];
+    for(route_name in routes) {
+      route = routes[route_name];
+      route.name = route_name;
+      route_list.append(route);
+    }
+
+    this.bus_routes = route_list;
     this.getDirections();
   },
 
