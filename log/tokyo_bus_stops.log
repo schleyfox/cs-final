@@ -76,3 +76,69 @@
 2009-12-06T22:30:39-05:00	INFO	connected: 127.0.0.1:55311
 2009-12-06T22:30:49-05:00	INFO	connection finished
 2009-12-06T22:33:18-05:00	INFO	connection finished
+2009-12-06T22:38:56-05:00	INFO	signal interruption
+2009-12-06T22:38:56-05:00	SYSTEM	listening finished
+2009-12-06T22:38:56-05:00	SYSTEM	closing the database
+2009-12-06T22:38:56-05:00	INFO	worker thread 1 was canceled
+2009-12-06T22:38:56-05:00	INFO	worker thread 1 finished
+2009-12-06T22:38:56-05:00	INFO	worker thread 2 was canceled
+2009-12-06T22:38:56-05:00	INFO	worker thread 2 finished
+2009-12-06T22:38:56-05:00	INFO	worker thread 3 was canceled
+2009-12-06T22:38:56-05:00	INFO	worker thread 3 finished
+2009-12-06T22:38:56-05:00	INFO	worker thread 4 was canceled
+2009-12-06T22:38:56-05:00	INFO	worker thread 4 finished
+2009-12-06T22:38:56-05:00	INFO	worker thread 5 was canceled
+2009-12-06T22:38:56-05:00	INFO	worker thread 5 finished
+2009-12-06T22:38:56-05:00	INFO	worker thread 6 was canceled
+2009-12-06T22:38:56-05:00	INFO	worker thread 6 finished
+2009-12-06T22:38:56-05:00	INFO	worker thread 7 was canceled
+2009-12-06T22:38:56-05:00	INFO	worker thread 7 finished
+2009-12-06T22:38:56-05:00	INFO	worker thread 8 was canceled
+2009-12-06T22:38:56-05:00	INFO	worker thread 8 finished
+2009-12-06T22:38:56-05:00	INFO	timer thread 1 was canceled
+2009-12-06T22:38:56-05:00	INFO	timer thread 1 finished
+2009-12-06T22:38:56-05:00	SYSTEM	service finished
+2009-12-06T22:38:56-05:00	SYSTEM	--------- logging finished [69113] --------
+2009-12-06T22:39:17-05:00	SYSTEM	--------- logging started [79393] --------
+2009-12-06T22:39:17-05:00	SYSTEM	process ID configuration: path=/Users/ben/projects/school/CS2220/final/run/tokyo_bus_stops.pid pid=79393
+2009-12-06T22:39:17-05:00	SYSTEM	server configuration: host=(any) port=4321
+2009-12-06T22:39:17-05:00	SYSTEM	opening the database: /Users/ben/projects/school/CS2220/final/db/tokyo_bus_stops.tct
+2009-12-06T22:39:17-05:00	SYSTEM	service started: 79393
+2009-12-06T22:39:17-05:00	INFO	timer thread 1 started
+2009-12-06T22:39:17-05:00	INFO	worker thread 1 started
+2009-12-06T22:39:17-05:00	INFO	worker thread 2 started
+2009-12-06T22:39:17-05:00	INFO	worker thread 3 started
+2009-12-06T22:39:17-05:00	INFO	worker thread 4 started
+2009-12-06T22:39:17-05:00	INFO	worker thread 5 started
+2009-12-06T22:39:17-05:00	INFO	worker thread 6 started
+2009-12-06T22:39:17-05:00	INFO	worker thread 7 started
+2009-12-06T22:39:17-05:00	INFO	worker thread 8 started
+2009-12-06T22:39:17-05:00	SYSTEM	listening started
+2009-12-06T22:39:35-05:00	INFO	connected: 127.0.0.1:55434
+2009-12-06T22:39:35-05:00	INFO	connection finished
+2009-12-06T22:39:50-05:00	INFO	connected: 127.0.0.1:55437
+2009-12-06T22:39:58-05:00	INFO	connection finished
+2009-12-06T22:40:03-05:00	INFO	connected: 127.0.0.1:55533
+2009-12-06T22:40:13-05:00	INFO	connection finished
+2009-12-06T22:40:18-05:00	INFO	connected: 127.0.0.1:55535
+2009-12-06T22:40:45-05:00	INFO	connection finished
+2009-12-06T22:40:46-05:00	INFO	connected: 127.0.0.1:55538
+2009-12-06T22:41:11-05:00	INFO	connection finished
+2009-12-06T22:41:44-05:00	INFO	connected: 127.0.0.1:55548
+2009-12-06T22:42:08-05:00	INFO	connection finished
+2009-12-06T22:42:45-05:00	INFO	connected: 127.0.0.1:55551
+2009-12-06T22:42:55-05:00	INFO	connected: 127.0.0.1:55552
+2009-12-06T22:43:02-05:00	INFO	connection finished
+2009-12-06T22:43:22-05:00	INFO	connected: 127.0.0.1:55649
+2009-12-06T22:43:26-05:00	INFO	doing vanish command
+2009-12-06T22:43:28-05:00	INFO	connection finished
+2009-12-06T22:43:30-05:00	INFO	connected: 127.0.0.1:55651
+2009-12-06T22:43:37-05:00	INFO	connection finished
+2009-12-06T22:43:48-05:00	INFO	connection finished
+2009-12-06T22:43:49-05:00	INFO	connected: 127.0.0.1:55748
+2009-12-06T22:43:58-05:00	INFO	connected: 127.0.0.1:55750
+2009-12-06T22:45:09-05:00	INFO	connection finished
+2009-12-06T22:45:13-05:00	INFO	connection finished
+2009-12-06T22:45:56-05:00	INFO	connected: 127.0.0.1:55760
+2009-12-06T22:46:18-05:00	INFO	connection finished
+2009-12-06T22:46:45-05:00	INFO	connected: 127.0.0.1:55764

@@ -1,5 +1,6 @@
 require 'tokyo'
 require 'hpricot'
+require 'json'
 require 'open-uri'
 
 BusStops.keys.each do |stop|
@@ -12,6 +13,9 @@ BusStops.keys.each do |stop|
     times[cols[1].innerHTML] << cols[3].innerHTML.to_i*60
   end
 
+  times.each do |route, timelist|
+    times[route] = timelist.to_json
+  end
 
   BusTimes[stop.to_s] = times.merge('fetched_at' => Time.now.to_i)
 end
