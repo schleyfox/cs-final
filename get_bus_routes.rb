@@ -1,8 +1,11 @@
+#Overview: Gets data from the website and stores it into a json file
 require 'rubygems'
 require 'open-uri'
+#hpricot is a library for HTML parsing
 require 'hpricot'
 require 'json'
 
+#Set the route names into a hash
 routes = {'northline' => 'NL', 'cgs' => 'CGS', 'colonnade' => 'CS', 'green' => 'G', 'innerloop' => 'UL', 'shs' => 'SHS'}
 graph = {}
 

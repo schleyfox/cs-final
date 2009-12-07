@@ -1,4 +1,9 @@
+#Overview: Screen scrapes data from the UTS website for bus times
+
+#tokyo is the wrapper to TokyoCabinet, which is a light, fast, and efficient
+#      datastore
 require 'tokyo'
+#hpricot is the library for HTML parsing
 require 'hpricot'
 require 'json'
 require 'open-uri'
