@@ -8,7 +8,7 @@ var Direction = {
     //Modifies: this.direction_requests
     //Effects: Initializes Direction object and sets
     //         busRoutes
-    $.getJSON("localhost:4567/bus_routes.json",
+    $.getJSON("localhost:4567/bus_routes_with_geo.json",
         //setBusRoutes to data
         function(data) {
           this.setBusRoutes(data);
@@ -67,44 +67,50 @@ var Direction = {
     }
   },
 
+  distance: function(a, b) {
+    return Math.sqrt(pow((b[0]-a[0]),2)+pow((b[1]-a[1]),2));
+  },
+
   findNearestRoute: function(start, end) {
-	//REQUIRES:
-	//EFFECTS:
-	//MODIFIES:
- 
-	//Every kind of route,, to hold the distances for each route (Distances is the shortest total from starting point and ending point to the nearest stops on the line)
-	TotalDistances['NL'] = 0;
-	TotalDistances['CS'] = 0;
-	TotalDistances['G'] = 0;
-	TotalDistances['UL'] = 0;
-	TotalDistances['CGS'] = 0;
-      $.getJSON("localhost:4567/bus_routes_with_geo.json",
-        //Go Through every object in the Json.
-        function(data) {
-          for(route_type in data)
-		  {
-			TStartD, TEndD = 100.0;
-			for(stop_num in data[route_type])
-			{
-				//Find the distances for the Stop on this line. If it is smaller, make its distance the smallest distance for the line. Uses the Distance Formula.
-				//SquareRoot( BusLat - StatrtLat)^2 + (BusLong - StartLong)^2)
-				StartDistance = Math.sqrt((data[route_type][stop_num][0] - start[0])(data[route_type][stop_num][0] - start[0]) + (data[route_type][stop_num][1] - start[1])(data[route_type][stop_num][1] - start[1]))
-				EndDistance = Math.sqrt((data[route_type][stop_num][0] - end[0])(data[route_type][stop_num][0] - end[0]) + (data[route_type][stop_num][1] - end[1])(data[route_type][stop_num][1] - end[1]))
-				if(StartDistance < TStartD) {TStartD = StartDistance;}
-				if(EndDistance < TEndD) {TEndD = EndDistance;}
-			}
-			//Store the final smallest disances for this Line
-			TotalDistances[route_type] = TStartD + TEndD;
-		  }
-		  TempDistance = 100.0;
-		  var FinalRoute;
-		  //Finally, find out which route had the shortest distance.
-		  for(route_type in TotalDistances)
-		  {
-			if(TotalDistances[route_type] < TempDistance) {FinalRoute = route_type;}
-		  }
-		  //FinalRoute is the best route to take. I don't know what you want this function to return though.
-		});
+    //REQUIRES:
+    //EFFECTS:
+    //MODIFIES:
+    
+    distances = [];
+    
+    for(i in this.bus_routes) {
+      route = this.bus_routes[i];
+    
+      start_min = [-1,999999];
+      for(j in route) {
+        start_dist = this.distance(start, route[j][1]);
+        if(start_dist < start_min[1]) {
+          start_min = [j, start_dist];
+        }
+      }
+    
+      end_min = [-1,999999];
+      //end has to occur on the line after start
+      route_after_start = slice(route, start_min[0], route.size-1)
+      for(j in route_after_start) {
+        end_dist = this.distance(end, route[j][1]);
+        if(end_dist < end_min[1]) {
+          end_min = [j, end_dist];
+        }
+      }
+    
+      distances.append([start_min[1] + end_min[1], route, start_min[0], end_min[0]]);
+    }
+    
+    dist_min = [999999];
+    for(i in distances) {
+      distance = distances[i];
+      if(distance[0] < dist_min[0]) {
+        dist_min = distance;
+      }
+    }
+    
+    return slice(dist_min, 1, dist_min.size-1)
   },
 
   directionsCallback: function(name) {
