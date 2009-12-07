@@ -1,4 +1,5 @@
-#Overview: Screen scrapes data from the UTS website for bus times
+#Overview: Screen scrapes data from the UTS website for bus times. Called by
+#          cron.
 
 #tokyo is the wrapper to TokyoCabinet, which is a light, fast, and efficient
 #      datastore

@@ -1,3 +1,5 @@
+#Overview: Server reads in from the Tokyo Cabinet datastore and puts it into
+#          the bus_times.json file for use with javascript. Runs as daemon.
 require 'tokyo'
 require 'sinatra'
 require 'json'
