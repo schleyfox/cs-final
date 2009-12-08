@@ -2,21 +2,21 @@
 //          front-end and the back-end. It loads bus_times and bus_routes
 //          when the user makes a request to the server. It does most of
 //          the handling in sending requests to the Google Maps API.
-var Direction = {
-  init: function() {
+function Direction() {
     //Requires: true
     //Modifies: this.direction_requests
     //Effects: Initializes Direction object and sets
     //         busRoutes
-    $.getJSON("localhost:4567/bus_routes.json",
+    s = this;
+    $.getJSON("/bus_routes_with_geo.json",
         //setBusRoutes to data
         function(data) {
-          this.setBusRoutes(data);
+          s.setBusRoutes(data);
         });
     this.direction_requests = {}
     return this;
-  },
-
+}
+Direction.prototype = {
   setBusRoutes: function(routes) {
     //Requires: routes to be initialized and properly populated
     //          with data from bus_routes.json
@@ -28,7 +28,7 @@ var Direction = {
     for(route_name in routes) {
       route = routes[route_name];
       route.name = route_name;
-      route_list.append(route);
+      route_list.push(route);
     }
 
     this.bus_routes = route_list;
@@ -45,7 +45,7 @@ var Direction = {
       end_location = this.end_location
       //Get the latest bus_times to ensure the data we provide is accurate
       //Note: bus_times is updated every minute using cron
-      $.getJSON("localhost:4567/bus_times.json",
+      $.getJSON("/bus_times.json",
       function(times) {
         this.direction_requests = {}
 
@@ -67,7 +67,51 @@ var Direction = {
     }
   },
 
-  findNearestRoute: function(start, end) {},
+  distance: function(a, b) {
+    return Math.sqrt(pow((b[0]-a[0]),2)+pow((b[1]-a[1]),2));
+  },
+
+  findNearestRoute: function(start, end) {
+    //REQUIRES:
+    //EFFECTS:
+    //MODIFIES:
+    
+    distances = [];
+    
+    for(i in this.bus_routes) {
+      route = this.bus_routes[i];
+    
+      start_min = [-1,999999];
+      for(j in route) {
+        start_dist = this.distance(start, route[j][1]);
+        if(start_dist < start_min[1]) {
+          start_min = [j, start_dist];
+        }
+      }
+    
+      end_min = [-1,999999];
+      //end has to occur on the line after start
+      route_after_start = slice(route, start_min[0], route.size-1)
+      for(j in route_after_start) {
+        end_dist = this.distance(end, route[j][1]);
+        if(end_dist < end_min[1]) {
+          end_min = [j, end_dist];
+        }
+      }
+    
+      distances.push([start_min[1] + end_min[1], route, start_min[0], end_min[0]]);
+    }
+    
+    dist_min = [999999];
+    for(i in distances) {
+      distance = distances[i];
+      if(distance[0] < dist_min[0]) {
+        dist_min = distance;
+      }
+    }
+    
+    return slice(dist_min, 1, dist_min.size-1)
+  },
 
   directionsCallback: function(name) {
     //Requires: Requires name to be not null
@@ -89,7 +133,7 @@ var Direction = {
       }
       displayTimes();
     };
-  }
+  },
 
   getWalkingDirections: function(name, start, end) {
     //Requires: Name, start, and end all to be non-null
@@ -103,7 +147,7 @@ var Direction = {
       provideTripAlternatives: false,
       travelMode: WALKING}),
       directionsCallback(name));
-  }
+  },
 
   getDrivingDirections: function(name, path) {
     //Requires: Name and path to be non-null
@@ -129,7 +173,13 @@ var Direction = {
       travelMode: DRIVING,
       waypoints: waypoints}),
       directionsCallback(name));
+  },
+
+  displayTimes: function() {
+    alert(this.direction_requests.just_walking.trips[0].routes[0].duration);
+    alert(this.direction_requests.walk_to_start.trips[0].routes[0].duration + 
+          this.direction_requests.bus_driving.trips[0].routes[0].duration +
+          this.direction_requests.walk_to_end.trips[0].routes[0].duration);
   }
 }
-
 
