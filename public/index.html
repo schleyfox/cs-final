@@ -1,0 +1,70 @@
+<html>
+<head>
+<title>Project Bitch</title>
+<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAvdV_C7EiC5qvYhizkNRvmxQ_pFa7EbBvItR2syiehiKCeylqUhSqRWNiI9G0u5Zlh8ZrT-4fScLzTw"></script>
+<script type="text/javascript" src="/jquery.min.js"></script> 
+<script type="text/javascript" src="/direction.js"></script> 
+<script type="text/javascript">
+  
+function getCoords (form) {
+    var Start = form.StartingAddress.value;
+  var End = form.Destination.value;
+  
+    //Ajax request for starting point
+    jQuery.ajax({
+    dataType: 'jsonp',
+    url: 'http://maps.google.com/maps/geo?q=' + Start + '&output=json&sensor=true&key=ABQIAAAAvdV_C7EiC5qvYhizkNRvmxQ_pFa7EbBvItR2syiehiKCeylqUhSqRWNiI9G0u5Zlh8ZrT-4fScLzTw',
+    cache: false,
+    success: function(data){
+      if(data.Status.code==200) {
+        direction.setStartLocation([data.Placemark[0].Point.coordinates[1],data.Placemark[0].Point.coordinates[0]]);
+      }
+    }
+  })
+  
+    //Ajax request for ending point
+    jQuery.ajax({
+    dataType: 'jsonp',
+    url: 'http://maps.google.com/maps/geo?q=' + End + '&output=json&sensor=true&key=ABQIAAAAvdV_C7EiC5qvYhizkNRvmxQ_pFa7EbBvItR2syiehiKCeylqUhSqRWNiI9G0u5Zlh8ZrT-4fScLzTw',
+    cache: false,
+    success: function(data){
+      if(data.Status.code==200) {
+        direction.setEndLocation([data.Placemark[0].Point.coordinates[1],data.Placemark[0].Point.coordinates[0]]);
+      }
+    }
+  })
+}
+
+function ShowTheMap() {
+        map = new GMap2(document.getElementById("map_canvas"));
+    Directions = new GDirections(map, null);
+    Directions.load("From: " + Coords[0] + " To: " + Coords[2]);
+    //alert("From: " + Coords[0] + " To: " + Coords[2]);
+        map.setCenter(new GLatLng(Coords[0][0], Coords[0][1]), 13);
+        map.setUIToDefault();
+    var Start = new GLatLng(Coords[0][0], Coords[0][1]);
+    var Stop = new GLatLng(Coords[1][0], Coords[1][1]);
+    var End = new GLatLng(Coords[2][0], Coords[2][1]);
+        map.addOverlay(new GMarker(Start));
+    map.addOverlay(new GMarker(End));
+    map.addOverlay(new GMarker(Stop));
+}
+
+</script>
+</head>
+<body>
+<script type="text/javascript">
+$(document).ready(function() {
+  var map;
+  var direction = new Direction();
+})
+</script>
+
+<form name="TheForm" action="" method="GET">
+Enter Your Starting Address.<br><input type=text name="StartingAddress" value=""><br>
+Enter Your Destination.<br><input type=text name="Destination" value="">
+<br><input type=button name="button" value="Go" onClick="GetCoords(this.form)"><br><input type=button name="button" value="Build Map" onClick="ShowTheMap()"><br><input type=button name="button" value="Go" onClick="PopulateInfo">
+<div id="map_canvas" style="width: 75%; height: 500px; float: left;"></div><div id="map_canvas" style="width: 25%; height: 500px; float: right; border=1px;"></div>
+</form>
+</body>
+</html>

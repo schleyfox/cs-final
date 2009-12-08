@@ -2,21 +2,21 @@
 //          front-end and the back-end. It loads bus_times and bus_routes
 //          when the user makes a request to the server. It does most of
 //          the handling in sending requests to the Google Maps API.
-var Direction = {
-  init: function() {
+function Direction() {
     //Requires: true
     //Modifies: this.direction_requests
     //Effects: Initializes Direction object and sets
     //         busRoutes
-    $.getJSON("localhost:4567/bus_routes_with_geo.json",
+    s = this;
+    $.getJSON("/bus_routes_with_geo.json",
         //setBusRoutes to data
         function(data) {
-          this.setBusRoutes(data);
+          s.setBusRoutes(data);
         });
     this.direction_requests = {}
     return this;
-  },
-
+}
+Direction.prototype = {
   setBusRoutes: function(routes) {
     //Requires: routes to be initialized and properly populated
     //          with data from bus_routes.json
@@ -28,7 +28,7 @@ var Direction = {
     for(route_name in routes) {
       route = routes[route_name];
       route.name = route_name;
-      route_list.append(route);
+      route_list.push(route);
     }
 
     this.bus_routes = route_list;
@@ -45,7 +45,7 @@ var Direction = {
       end_location = this.end_location
       //Get the latest bus_times to ensure the data we provide is accurate
       //Note: bus_times is updated every minute using cron
-      $.getJSON("localhost:4567/bus_times.json",
+      $.getJSON("/bus_times.json",
       function(times) {
         this.direction_requests = {}
 
@@ -99,7 +99,7 @@ var Direction = {
         }
       }
     
-      distances.append([start_min[1] + end_min[1], route, start_min[0], end_min[0]]);
+      distances.push([start_min[1] + end_min[1], route, start_min[0], end_min[0]]);
     }
     
     dist_min = [999999];
@@ -133,7 +133,7 @@ var Direction = {
       }
       displayTimes();
     };
-  }
+  },
 
   getWalkingDirections: function(name, start, end) {
     //Requires: Name, start, and end all to be non-null
@@ -147,7 +147,7 @@ var Direction = {
       provideTripAlternatives: false,
       travelMode: WALKING}),
       directionsCallback(name));
-  }
+  },
 
   getDrivingDirections: function(name, path) {
     //Requires: Name and path to be non-null
@@ -173,7 +173,13 @@ var Direction = {
       travelMode: DRIVING,
       waypoints: waypoints}),
       directionsCallback(name));
+  },
+
+  displayTimes: function() {
+    alert(this.direction_requests.just_walking.trips[0].routes[0].duration);
+    alert(this.direction_requests.walk_to_start.trips[0].routes[0].duration + 
+          this.direction_requests.bus_driving.trips[0].routes[0].duration +
+          this.direction_requests.walk_to_end.trips[0].routes[0].duration);
   }
 }
-
 
