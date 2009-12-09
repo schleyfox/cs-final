@@ -91,19 +91,15 @@ function showMap() {
         {
             map.setCenter(new GLatLng(36.697011,-79.870984),13);
         }*/
-
     };
 
 }
-
 </script>
 </head>
 <body>
-<script type="text/javascript">
-</script>
 <h1><center>HoosMap</center></h1>
 <h3><center>"Surprisingly Witty!"</center></h3>
-<form id="TheForm" name="TheForm" onsubmit="showMap()">
+<form id="TheForm" method="post" action="" name="TheForm" onSubmit="return false">
 Enter Your Starting Address.<br><input type=text name="StartingAddress" value=""><br>
 Enter Your Destination.<br><input type=text name="Destination" value=""><br><br>
 Your approximate walking time is: <div id="walking_time"> </div> <br>
