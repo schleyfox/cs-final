@@ -2,13 +2,17 @@
 <head>
 <title>Hoos Map</title>
 <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAvdV_C7EiC5qvYhizkNRvmxQ_pFa7EbBvItR2syiehiKCeylqUhSqRWNiI9G0u5Zlh8ZrT-4fScLzTw"></script>
-<script type="text/javascript" src="/jquery.min.js"></script> 
-<script type="text/javascript" src="/direction.js"></script> 
+<script type="text/javascript" src="/home/rsingh/Desktop/cs-final/public/jquery.min.js"></script> 
+<script type="text/javascript" src="/home/rsingh/Desktop/cs-final/public/direction.js"></script> 
 <script type="text/javascript">
-  
+$(document).ready(function() {
+  var map;
+})
+var direction = new Direction();
+var Coords=[5];  
 function getCoords (form) {
     var Start = form.StartingAddress.value;
-  var End = form.Destination.value;
+    var End = form.Destination.value;
   
     //Ajax request for starting point
     jQuery.ajax({
@@ -36,7 +40,8 @@ function getCoords (form) {
 }
 
 function ShowTheMap() {
-        map = new GMap2(document.getElementById("map_canvas"));
+    getCoords(document.getElementById("TheForm"));
+    map = new GMap2(document.getElementById("map_canvas"));
     Directions = new GDirections(map, null);
     Directions.load("From: " + Coords[0] + " To: " + Coords[2]);
     //alert("From: " + Coords[0] + " To: " + Coords[2]);
@@ -54,13 +59,9 @@ function ShowTheMap() {
 </head>
 <body>
 <script type="text/javascript">
-$(document).ready(function() {
-  var map;
-  var direction = new Direction();
-})
 </script>
 
-<form name="TheForm" action="" method="GET">
+<form id="TheForm" name="TheForm" action="" method="GET">
 Enter Your Starting Address.<br><input type=text name="StartingAddress" value=""><br>
 Enter Your Destination.<br><input type=text name="Destination" value="">
 <br><input type=button name="button" value="Go" onClick="GetCoords(this.form)"><br><input type=button name="button" value="Build Map" onClick="ShowTheMap()"><br><input type=button name="button" value="Go" onClick="PopulateInfo">
