@@ -146,3 +146,21 @@
 2009-12-08T14:57:08-05:00	INFO	connected: 127.0.0.1:50826
 2009-12-08T14:57:16-05:00	INFO	connection finished
 2009-12-08T14:57:42-05:00	INFO	connected: 127.0.0.1:50828
+2009-12-09T16:47:12-05:00	SYSTEM	--------- logging started [14495] --------
+2009-12-09T16:47:12-05:00	SYSTEM	process ID configuration: path=/Users/Becca/cs-final/run/tokyo_bus_stops.pid pid=14495
+2009-12-09T16:47:12-05:00	SYSTEM	server configuration: host=(any) port=4321
+2009-12-09T16:47:12-05:00	SYSTEM	opening the database: /Users/Becca/cs-final/db/tokyo_bus_stops.tct
+2009-12-09T16:47:12-05:00	SYSTEM	service started: 14495
+2009-12-09T16:47:12-05:00	INFO	timer thread 1 started
+2009-12-09T16:47:12-05:00	INFO	worker thread 1 started
+2009-12-09T16:47:12-05:00	INFO	worker thread 2 started
+2009-12-09T16:47:12-05:00	INFO	worker thread 3 started
+2009-12-09T16:47:12-05:00	INFO	worker thread 4 started
+2009-12-09T16:47:12-05:00	INFO	worker thread 5 started
+2009-12-09T16:47:12-05:00	INFO	worker thread 6 started
+2009-12-09T16:47:12-05:00	INFO	worker thread 7 started
+2009-12-09T16:47:12-05:00	INFO	worker thread 8 started
+2009-12-09T16:47:12-05:00	SYSTEM	listening started
+2009-12-09T16:47:24-05:00	INFO	connected: 127.0.0.1:55998
+2009-12-09T16:47:24-05:00	INFO	connection finished
+2009-12-09T16:48:03-05:00	INFO	connected: 127.0.0.1:56005
