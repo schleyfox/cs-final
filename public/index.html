@@ -8,9 +8,12 @@
 $(document).ready(function() {
 })
 var direction = new Direction();
-  var map;
-showMap();
-function getCoords (form) {
+var map;
+
+
+function showDirections()
+{
+    form = document.getElementById("TheForm");
     var Start = form.StartingAddress.value;
     var End = form.Destination.value;
     if(!Start || !End)
@@ -23,6 +26,7 @@ function getCoords (form) {
     url: 'http://maps.google.com/maps/geo?q=' + Start + '&output=json&sensor=true&key=ABQIAAAAvdV_C7EiC5qvYhizkNRvmxQ_pFa7EbBvItR2syiehiKCeylqUhSqRWNiI9G0u5Zlh8ZrT-4fScLzTw',
     cache: false,
     success: function(data){
+      //Will do this code when the request is successful
       if(data.Status.code==200) {
         direction.setStartLocation([data.Placemark[0].Point.coordinates[1],data.Placemark[0].Point.coordinates[0]]);
         var Start = new GLatLng(direction.getStartLocation()[0],direction.getStartLocation()[1]);
@@ -38,17 +42,16 @@ function getCoords (form) {
     cache: false,
     success: function(data){
       if(data.Status.code==200) {
+        //Will do this code when the request is successful
         direction.setEndLocation([data.Placemark[0].Point.coordinates[1],data.Placemark[0].Point.coordinates[0]]);
         var End = new GLatLng(direction.getEndLocation()[0],direction.getEndLocation()[1]);
         map.addOverlay(new GMarker(End));
+
+        //gets directions
+        direction.getDirections();
       }
     }
   })
-}
-
-function showDirections()
-{
-    getCoords(document.getElementById("TheForm"));
 }
 
 function showMap() {
@@ -85,9 +88,10 @@ function showMap() {
 <form id="TheForm" name="TheForm" action="" method="GET">
 Enter Your Starting Address.<br><input type=text name="StartingAddress" value=""><br>
 Enter Your Destination.<br><input type=text name="Destination" value="">
-<br><input type=button name="button" value="Go" onClick="GetCoords(this.form)"><br><input type=button name="button" value="Build Map" onClick="showMap()">
 <br>
 <input type=button name="button" value="Show Directions" onClick="showDirections()">
+<br><br><input type=button name="button" value="Build Map" onClick="showMap()">
+<br>
 <div id="map_canvas" style="width: 75%; height: 500px; float: left;"></div><div id="map_canvas" style="width: 25%; height: 500px; float: right; border=1px;"></div>
 </form>
 </body>
