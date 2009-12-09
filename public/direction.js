@@ -139,6 +139,11 @@ Direction.prototype = {
     return slice(dist_min, 1, dist_min.size-1)
   },
 
+  getDirectionRequests: function(name)
+  {
+      return this.direction_requests[name];
+  },
+
   directionsCallback: function(name) {
     //Requires: Requires name to be not null
     //Effects: Checks to see if all the information in direction_requests
