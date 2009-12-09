@@ -35,6 +35,22 @@ Direction.prototype = {
     this.getDirections();
   },
 
+  setStartLocation: function(startCoord)
+  {
+    //Requires: Coordinates in the form [float,float]
+    //Modifies: this.start_location
+    //Effects: Sets this.start_location
+    this.start_location = startCoord;
+  },
+  
+  setEndLocation: function(endCoord)
+  {
+    //Requires: Coordinates in the form [float,float]
+    //Modifies: this.end_location
+    //Effects: Sets this.end_location
+    this.end_location = endCoord;
+  },
+
   getDirections: function() {
     //Requires: true
     //Effects: Loads in bus_times and
