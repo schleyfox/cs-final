@@ -51,6 +51,16 @@ Direction.prototype = {
     this.end_location = endCoord;
   },
 
+  getStartLocation: function()
+  {
+    return this.start_location;
+  },
+
+  getEndLocation: function()
+  {
+    return this.end_location;
+  },
+
   getDirections: function() {
     //Requires: true
     //Effects: Loads in bus_times and
