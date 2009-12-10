@@ -56,23 +56,12 @@ function showDirections()
 }
 
 function showMap() {
-
-<<<<<<< HEAD:public/index.html
-        //Sets Center to UVA
-        map.setCenter(new GLatLng(38.034453,-78.51781),13);
-      
-        /*
-        This is the starting code for using current location with mobile
-        devices:
-        if(google.loader.ClientLocation && google.loader.ClientLocation.address.country_code == "US")
-        {
-            map.setCenter(new GLatLng(google.loader.ClientLocation.latitude, google.loader.ClientLocation.longitude), 13);
-        }
-        else
-        {
-            map.setCenter(new GLatLng(36.697011,-79.870984),13);
-        }*/
-    };
+  //Creates map and sets center to UVA
+  map = new google.maps.Map(document.getElementById("map_canvas"), 
+      { zoom: 13, 
+        center: new google.maps.LatLng(38.034453,-78.51781),
+        mapTypeId: google.maps.MapTypeId.ROADMAP });
+ 
 }
 </script>
 </head>
