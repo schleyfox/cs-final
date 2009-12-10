@@ -11,7 +11,6 @@ $(document).ready(function() {
   showMap();
 })
 
-
 function showDirections()
 {
     form = document.getElementById("TheForm");
@@ -78,7 +77,6 @@ function showMap() {
   }*/
 
 
-
 }
 
 </script>
@@ -86,15 +84,20 @@ function showMap() {
 <body>
 <script type="text/javascript">
 </script>
-
-<form id="TheForm" name="TheForm" action="" method="GET">
+<h1><center>HoosMap</center></h1>
+<h3><center>"Surprisingly Witty!"</center></h3>
+<form id="TheForm" name="TheForm" onsubmit="showMap()">
 Enter Your Starting Address.<br><input type=text name="StartingAddress" value=""><br>
-Enter Your Destination.<br><input type=text name="Destination" value="">
+Enter Your Destination.<br><input type=text name="Destination" value=""><br><br>
+Your approximate walking time is: <div id="walking_time"> </div> <br>
+Your approximate bus time is: <div id="bus_time"> </div></div> <br>
 <br>
-<input type=button name="button" value="Show Directions" onClick="showDirections()">
-<br><br><input type=button name="button" value="Build Map" onClick="showMap()">
+<input type=button name="button1" id="ShowDirectionsButton" value="Show Directions" onClick="showDirections()">
+<br><br><input type=button name="button2" id="ShowMapButton" value="Build Map" onClick="showMap()">
 <br>
 <div id="map_canvas" style="width: 75%; height: 500px; float: left;"></div><div id="map_canvas" style="width: 25%; height: 500px; float: right; border=1px;"></div>
+<div id="directions_panel">
+</div>
 </form>
 </body>
 </html>
