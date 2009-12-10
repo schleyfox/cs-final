@@ -1,29 +1,15 @@
 <html>
 <head>
 <title>Hoos Map</title>
-<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAvdV_C7EiC5qvYhizkNRvmxQ_pFa7EbBvItR2syiehiKCeylqUhSqRWNiI9G0u5Zlh8ZrT-4fScLzTw"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=ABQIAAAAvdV_C7EiC5qvYhizkNRvmxQ_pFa7EbBvItR2syiehiKCeylqUhSqRWNiI9G0u5Zlh8ZrT-4fScLzTw"></script>
 <script type="text/javascript" src="/jquery.min.js"></script> 
 <script type="text/javascript" src="/direction.js"></script> 
 <script type="text/javascript">
-/*$(document).ready(function() {
-
-   $("input").bind("keydown", function(event) {
-      // track enter key
-      var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
-      if (keycode == 13) { // keycode for enter key
-         // force the 'Enter Key' to implicitly click the Update button
-         document.getElementById('ShowMapButton').click();
-         return false;
-      } else  {
-         return true;
-      }
-   }); // end of function
-
-}); // end of document ready
-*/
-var direction = new Direction();
-var map;
-
+$(document).ready(function() {
+  direction = new Direction();
+  map = null;
+  showMap();
+})
 
 function showDirections()
 {
@@ -43,8 +29,10 @@ function showDirections()
       //Will do this code when the request is successful
       if(data.Status.code==200) {
         direction.setStartLocation([data.Placemark[0].Point.coordinates[1],data.Placemark[0].Point.coordinates[0]]);
-        var Start = new GLatLng(direction.getStartLocation()[0],direction.getStartLocation()[1]);
-        map.addOverlay(new GMarker(Start));
+        var Start = new google.maps.LatLng(direction.getStartLocation()[0],direction.getStartLocation()[1]);
+        var m = new google.maps.Marker(Start);
+        m.setMap(map);
+        m.setVisible(true);
       }
     } 
   })
@@ -58,25 +46,18 @@ function showDirections()
       if(data.Status.code==200) {
         //Will do this code when the request is successful
         direction.setEndLocation([data.Placemark[0].Point.coordinates[1],data.Placemark[0].Point.coordinates[0]]);
-        var End = new GLatLng(direction.getEndLocation()[0],direction.getEndLocation()[1]);
-        map.addOverlay(new GMarker(End));
-
-        //gets directions
-        direction.getDirections();
-		aert('here');
-		walkingDirections = dirction.getDirectionRequests('just_walking');
-		alert(walkingDirections);
+        var End = new google.maps.LatLng(direction.getEndLocation()[0],direction.getEndLocation()[1]);
+        var m = new google.maps.Marker(End);
+        m.setMap(map);
+        m.setVisible(true);
       }
     }
   })
 }
 
 function showMap() {
-    if(GBrowserIsCompatible())
-    {
-        map = new GMap2(document.getElementById("map_canvas"));
-        map.setUIToDefault();
 
+<<<<<<< HEAD:public/index.html
         //Sets Center to UVA
         map.setCenter(new GLatLng(38.034453,-78.51781),13);
       
@@ -92,7 +73,6 @@ function showMap() {
             map.setCenter(new GLatLng(36.697011,-79.870984),13);
         }*/
     };
-
 }
 </script>
 </head>
