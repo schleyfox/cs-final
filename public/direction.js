@@ -14,6 +14,7 @@ function Direction() {
           s.setBusRoutes(data);
         });
     this.direction_requests = {}
+    this.enabled = true;
     return this;
 }
 Direction.prototype = {
@@ -68,7 +69,9 @@ Direction.prototype = {
     //Effects: Loads in bus_times and
     //Check to see if start_location, end_location, and bus_routes were
     //initialized
-    if(this.start_location && this.end_location && this.bus_routes) {
+    if(this.start_location && this.end_location && this.bus_routes && this.enabled) {
+      this.enabled = false
+
       start_location = this.start_location
       end_location = this.end_location
       //Get the latest bus_times to ensure the data we provide is accurate
@@ -153,7 +156,7 @@ Direction.prototype = {
       return this.direction_requests[name];
   },
 
-  directionsCallback: function(name) {
+  directionsCallback: function(name, default_value) {
     //Requires: Requires name to be not null
     //Effects: Checks to see if all the information in direction_requests
     //         is properly populated
@@ -161,9 +164,9 @@ Direction.prototype = {
     s = this
     return function(result, directions_status) {
       if(directions_status != google.maps.DirectionsStatus.OK) {
-        alert(directions_status);
+        alert(name + ": " + directions_status);
         alert("Google Maps Directions Service could not find a route");
-        return false;
+        result = {trips: [{routes: [{duration: {value: default_value}}]}]};
       }
       //Check all the output received by Google Maps to make sure it is defined
       //If there is a key not defined, then we must wait
@@ -202,36 +205,51 @@ Direction.prototype = {
     //restriction)
     //Note: A waypoint is considered a stop point the route must go through
     //      when using Google Maps
-    /*var waypoints = jQuery.map(path.slice(1, path.length-2), 
+    var waypoints = jQuery.map(path.slice(1, path.length-2), 
       function(point) {
-        return {location: new google.maps.LatLng(point[1][0],point[1][1]), stopover: false};
+        var p = point[1];
+        return {location: new google.maps.LatLng(p[0],p[1]), stopover: false};
       });
 
+
     var real_waypoints = [];
-    for(var i in waypoints) {
-      if(i%2 == 0) {
+
+    if(waypoints.length < 10) {
+      real_waypoints = waypoints;
+    } else {
+      var reduction = Math.floor(waypoints.length/10);
+      for(var i = 0; i <  waypoints.length; i += reduction) {
         real_waypoints.push(waypoints[i]);
       }
-    }*/
+    }
+    alert(real_waypoints.length);
+
 
     //send direction request to Google
     this.direction_requests[name] = null;
     var dir = new google.maps.DirectionsService();
     dir.route({
-      destination: new google.maps.LatLng(end[1],end[2]),
-      origin: new google.maps.LatLng(start[1],start[2]),
+      destination: new google.maps.LatLng(end[0],end[1]),
+      origin: new google.maps.LatLng(start[0],start[1]),
       provideTripAlternatives: false,
-      travelMode: google.maps.DirectionsTravelMode.DRIVING
-      /*,
-      waypoints: real_waypoints*/},
-      this.directionsCallback(name));
+      travelMode: google.maps.DirectionsTravelMode.DRIVING,
+      waypoints: real_waypoints},
+      this.directionsCallback(name, waypoints.length*30));
   },
 
   displayTimes: function() {
-    alert(this.direction_requests.just_walking.trips[0].routes[0].duration.text);
-    alert(this.direction_requests.walk_to_start.trips[0].routes[0].duration.value + 
-          this.direction_requests.bus_driving.trips[0].routes[0].duration.value +
-          this.direction_requests.walk_to_end.trips[0].routes[0].duration.value);
+    /*new google.maps.DirectionsRenderer({map: map, panel: document.getElementById("bus_panel"), directions: this.direction_requests.bus_driving});*/
+
+    alert(this.getTimeValue(this.direction_requests.just_walking)/60);
+    alert((this.getTimeValue(this.direction_requests.walk_to_start) + 
+          this.getTimeValue(this.direction_requests.bus_driving) +
+          this.getTimeValue(this.direction_requests.walk_to_end))/60);
+    this.enabled = true;
+  },
+
+  getTimeValue: function(d) {
+    r = d.trips[0].routes[0]
+    return (r.duration)? r.duration.value : 0
   }
-}
+}   
 
