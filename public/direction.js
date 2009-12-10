@@ -14,6 +14,7 @@ function Direction() {
           s.setBusRoutes(data);
         });
     this.direction_requests = {}
+    this.active_route = []
     this.enabled = true;
     return this;
 }
@@ -70,7 +71,10 @@ Direction.prototype = {
     //Check to see if start_location, end_location, and bus_routes were
     //initialized
     if(this.start_location && this.end_location && this.bus_routes && this.enabled) {
-      this.enabled = false
+      this.enabled = false;
+
+      $("#bus_time").html("<p>LOADING</p>");
+      $("#walking_time").html("<p>LOADING</p>");
 
       start_location = this.start_location
       end_location = this.end_location
@@ -79,12 +83,14 @@ Direction.prototype = {
       s = this
       $.getJSON("/bus_times.json",
       function(times) {
-        this.direction_requests = {}
+        s.bus_times = times;
+        s.direction_requests = {}
 
         var tmp_ary = s.findNearestRoute(start_location, end_location);
         var route = tmp_ary[0]; var start_index = tmp_ary[1]; var finish_index = tmp_ary[2];
 
-        alert(route.name);
+
+        s.active_route = [route.name, route.slice(start_index, finish_index)];
 
         s.getWalkingDirections('just_walking',
           start_location, end_location);
@@ -164,8 +170,6 @@ Direction.prototype = {
     s = this
     return function(result, directions_status) {
       if(directions_status != google.maps.DirectionsStatus.OK) {
-        alert(name + ": " + directions_status);
-        alert("Google Maps Directions Service could not find a route");
         result = {trips: [{routes: [{duration: {value: default_value}}]}]};
       }
       //Check all the output received by Google Maps to make sure it is defined
@@ -222,8 +226,6 @@ Direction.prototype = {
         real_waypoints.push(waypoints[i]);
       }
     }
-    alert(real_waypoints.length);
-
 
     //send direction request to Google
     this.direction_requests[name] = null;
@@ -240,10 +242,27 @@ Direction.prototype = {
   displayTimes: function() {
     /*new google.maps.DirectionsRenderer({map: map, panel: document.getElementById("bus_panel"), directions: this.direction_requests.bus_driving});*/
 
-    alert(this.getTimeValue(this.direction_requests.just_walking)/60);
-    alert((this.getTimeValue(this.direction_requests.walk_to_start) + 
-          this.getTimeValue(this.direction_requests.bus_driving) +
-          this.getTimeValue(this.direction_requests.walk_to_end))/60);
+    $("#walking_time").html("<p>About " + Math.round(this.getTimeValue(this.direction_requests.just_walking)/60) + " minutes</p>");
+    var bus_wait_times = this.bus_times[this.active_route[1][0][0]][this.active_route[0]];
+    var walk_to_start_time = this.getTimeValue(this.direction_requests.walk_to_start);
+
+    var bus_wait_time = null;
+     for(var i in bus_wait_times) {
+      if(walk_to_start_time < (bus_wait_times[i]-20)) {
+        bus_wait_time = bus_wait_times[i];
+        break;
+      }
+    }
+
+    if(bus_wait_time) {
+      var bus_time = ( bus_wait_time +
+                        
+                       this.getTimeValue(this.direction_requests.bus_driving) +
+                       this.getTimeValue(this.direction_requests.walk_to_end))/60
+      $("#bus_time").html("<p>About " + Math.round(bus_time) + " minutes on the " + this.active_route[0] + " line </p>");
+    } else {
+      $("#bus_time").html("<p>No busses arriving soon on the " + this.active_route[0] + " line</p>");
+    }
     this.enabled = true;
   },
 
